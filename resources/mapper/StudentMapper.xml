@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.frank.dao.StudentMapper">
+  <resultMap id="BaseResultMap" type="com.frank.entity.Student">
+    <id column="s_id" jdbcType="INTEGER" property="sId" />
+    <result column="s_name" jdbcType="VARCHAR" property="sName" />
+    <result column="first_wish" jdbcType="INTEGER" property="firstWish" />
+    <result column="second_wish" jdbcType="INTEGER" property="secondWish" />
+  </resultMap>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+      s_id, s_name, first_wish, second_wish
+    from student
+    where s_id = #{sId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from student
+    where s_id = #{sId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.frank.entity.Student">
+    insert into student (s_id, s_name, first_wish, 
+      second_wish)
+    values (#{sId,jdbcType=INTEGER}, #{sName,jdbcType=VARCHAR}, #{firstWish,jdbcType=INTEGER}, 
+      #{secondWish,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.frank.entity.Student">
+    insert into student
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="sId != null">
+        s_id,
+      </if>
+      <if test="sName != null">
+        s_name,
+      </if>
+      <if test="firstWish != null">
+        first_wish,
+      </if>
+      <if test="secondWish != null">
+        second_wish,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="sId != null">
+        #{sId,jdbcType=INTEGER},
+      </if>
+      <if test="sName != null">
+        #{sName,jdbcType=VARCHAR},
+      </if>
+      <if test="firstWish != null">
+        #{firstWish,jdbcType=INTEGER},
+      </if>
+      <if test="secondWish != null">
+        #{secondWish,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.frank.entity.Student">
+    update student
+    <set>
+      <if test="sName != null">
+        s_name = #{sName,jdbcType=VARCHAR},
+      </if>
+      <if test="firstWish != null">
+        first_wish = #{firstWish,jdbcType=INTEGER},
+      </if>
+      <if test="secondWish != null">
+        second_wish = #{secondWish,jdbcType=INTEGER},
+      </if>
+    </set>
+    where s_id = #{sId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.frank.entity.Student">
+    update student
+    set s_name = #{sName,jdbcType=VARCHAR},
+      first_wish = #{firstWish,jdbcType=INTEGER},
+      second_wish = #{secondWish,jdbcType=INTEGER}
+    where s_id = #{sId,jdbcType=INTEGER}
+  </update>
+</mapper>

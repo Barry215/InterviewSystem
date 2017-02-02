@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta s_name="viewport" content="width=device-width, initial-scale=1">
+    <title>等候室</title>
+    <link rel="stylesheet" href="static/css/bootstrap.css">
+    <link rel="stylesheet" href="static/css/denghou.css">
+</head>
+<body>
+
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">操作</h4>
+            </div>
+            <div class="modal-body">
+                <p style="font-size: 20px;">请选择您要执行的操作</p>
+            </div>
+            <div class="modal-footer">
+                <button id="btn_modal_1" type="button" class="btn btn-info">置顶</button>
+                <button id="btn_modal_2" type="button" class="btn btn-danger">删除</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<nav class="dh_nav">
+    <h1 id="dh_h1">面试等候室</h1>
+    <h2 style="float: right; font-size: 25px; color: #ffffff; margin-right:30px;">
+        长按姓名编辑
+    </h2>
+</nav>
+
+<div class="dh_sign">
+    <div class="form-inline">
+        <div class="form-group">
+            <label class="dh_label" for="student_id">学号</label>
+            <input type="number" class="form-control" id="student_id" s_name="student_id" placeholder="17062525" value="">
+        </div>
+        <div class="form-group" style="margin-left: 20px">
+            <label class="dh_label" for="student_name">姓名</label>
+            <input type="text" class="form-control" id="student_name" s_name="student_name" placeholder="张三" value="">
+        </div>
+
+        <label class="dh_label" for="select_1" style="margin-left: 20px">第一志愿</label>
+
+        <select id="select_1" title="第一志愿" s_name="firstWith">
+            <option value="1">组织部</option>
+            <option value="2">权益中心</option>
+            <option value="3">办公室</option>
+            <option value="4">公关部</option>
+            <option value="5">宣传部</option>
+            <option value="6">网技部</option>
+        </select>
+
+        <label class="dh_label" for="select_2" style="margin-left: 20px">第二志愿</label>
+
+        <select id="select_2" title="第二志愿" s_name="second_wish">
+            <option value="1">组织部</option>
+            <option value="2">权益中心</option>
+            <option value="3">办公室</option>
+            <option value="4">公关部</option>
+            <option value="5">宣传部</option>
+            <option value="6">网技部</option>
+        </select>
+        <button id="btn_qd" style="margin-left: 20px" class="btn btn-default">签到</button>
+    </div>
+</div>
+
+<div class="container-fluid" style="margin-top:20px;">
+    <div class="row">
+        <div class="col-md-2 col-sm-6 col-xs-12">
+            <div class="panel panel-default">
+
+                <div class="panel-heading dh_panel_title">组织部</div>
+                <div class="panel-body dh_span">
+                    <span style="font-size: 18px; color: orange">有个人 准备</span>
+                </div>
+
+                <ul id="ul_1" class="list-group">
+
+                </ul>
+            </div>
+        </div>
+
+        <div class="col-md-2 col-sm-6 col-xs-12">
+            <div class="panel panel-default">
+
+                <div class="panel-heading dh_panel_title">权益中心</div>
+                <div class="panel-body dh_span">
+                    <span style="font-size: 18px; color: red">有个人 面试中</span>
+                </div>
+
+                <ul id="ul_2" class="list-group">
+
+                </ul>
+            </div>
+        </div>
+
+        <div class="col-md-2 col-sm-6 col-xs-12">
+            <div class="panel panel-default">
+
+                <div class="panel-heading dh_panel_title">办公室</div>
+                <div class="panel-body dh_span">
+                    <span style="font-size: 18px; color: green">空 闲</span>
+                </div>
+
+                <ul id="ul_3" class="list-group">
+
+                </ul>
+            </div>
+        </div>
+
+        <div class="col-md-2 col-sm-6 col-xs-12">
+            <div class="panel panel-default">
+
+                <div class="panel-heading dh_panel_title">公关部</div>
+                <div class="panel-body dh_span">
+                    <span style="font-size: 18px; color: orange">有个人 准备</span>
+                </div>
+
+                <ul id="ul_4" class="list-group">
+
+                </ul>
+            </div>
+        </div>
+
+        <div class="col-md-2 col-sm-6 col-xs-12">
+            <div class="panel panel-default">
+
+                <div class="panel-heading dh_panel_title">宣传部</div>
+                <div class="panel-body dh_span">
+                    <span style="font-size: 18px; color: red">有个人 面试中</span>
+                </div>
+
+                <ul id="ul_5" class="list-group">
+
+                </ul>
+            </div>
+        </div>
+
+        <div class="col-md-2 col-sm-6 col-xs-12">
+            <div class="panel panel-default">
+
+                <div class="panel-heading dh_panel_title">网技部</div>
+                <div class="panel-body dh_span">
+                    <span style="font-size: 18px; color: red">有个人 面试中</span>
+                </div>
+
+                <ul id="ul_6" class="list-group">
+
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="static/js/jquery-3.1.0.min.js"></script>
+<script src="static/js/bootstrap.js"></script>
+
+<script>
+
+    var timeout;
+
+//    var count = 0;
+
+    var index;
+
+    var ul_id = "";
+
+    $("#btn_qd").on("click",function () {
+        var value_s_id = $("#student_id").val();
+        var value_s_name = $("#student_name").val();
+        var queue_wish_1 = $("#select_1").val();
+        var queue_wish_2 = $("#select_2").val();
+
+        if (value_s_id!="" && value_s_name!=""){
+            if (queue_wish_1 == queue_wish_2){
+                appendList(queue_wish_1,value_s_name);
+            }else {
+                appendList(queue_wish_1,value_s_name);
+                appendList(queue_wish_2,value_s_name);
+            }
+            $("#select_1").val(1);
+            $("#select_2").val(1);
+            $("#student_id").val("");
+            $("#student_name").val("");
+        }else {
+            alert("请填写完整");
+        }
+    });
+
+    $("#btn_modal_1").click(function () {
+        var jq_li = $("#"+ul_id+" li:eq("+index+")");
+        var text = jq_li.html();
+        jq_li.remove();
+//        $("#"+ul_id).prepend('<li id="li_'+count+'" class="list-group-item">'+text+"</li>");
+        $("#"+ul_id).prepend('<li class="list-group-item">'+text+"</li>");
+//        count++;
+        $('#myModal').modal('hide');
+    });
+
+    $("#btn_modal_2").click(function () {
+        $("#"+ul_id+" li:eq("+index+")").remove();
+        $('#myModal').modal('hide');
+    });
+
+    function appendList(value,s_name) {
+        switch(value){
+            case "1":
+                $("#ul_1").append('<li class="list-group-item">'+s_name+"</li>");
+                break;
+            case "2":
+                $("#ul_2").append('<li class="list-group-item">'+s_name+"</li>");
+                break;
+            case "3":
+                $("#ul_3").append('<li class="list-group-item">'+s_name+"</li>");
+                break;
+            case "4":
+                $("#ul_4").append('<li class="list-group-item">'+s_name+"</li>");
+                break;
+            case "5":
+                $("#ul_5").append('<li class="list-group-item">'+s_name+"</li>");
+                break;
+            case "6":
+                $("#ul_6").append('<li class="list-group-item">'+s_name+"</li>");
+                break;
+        }
+//        count++;
+    }
+
+    $(document).scroll(function() {
+        var scrollTop = $(document).scrollTop();
+        if (scrollTop > $('nav').height()) {
+            $('nav').addClass('navbar-fixed-top');
+        } else {
+            $('nav').removeClass('navbar-fixed-top');
+        }
+    });
+
+
+    $(".list-group").on('mousedown','li',function () {
+        index = $(this).index();
+        var s_name = $(this).text();
+        ul_id = $(this).parent().attr('id');
+        timeout = setTimeout(function() {
+            $(".modal-body p").text("对于"+s_name+"，请您选择操作");
+            $("#myModal").modal();
+        }, 1000);
+    });
+
+    $(".list-group").on('mouseup','li',function () {
+        clearTimeout(timeout);
+    });
+
+    $(".list-group").on('mouseout','li',function () {
+        clearTimeout(timeout);
+    });
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.frank.dao.RecordMapper">
+  <resultMap id="BaseResultMap" type="com.frank.entity.Record">
+    <id column="record_id" jdbcType="INTEGER" property="recordId" />
+    <result column="section_id" jdbcType="INTEGER" property="sectionId" />
+    <result column="s_id" jdbcType="INTEGER" property="sId" />
+    <result column="s_name" jdbcType="VARCHAR" property="sName" />
+    <result column="looks_remark" jdbcType="VARCHAR" property="looksRemark" />
+    <result column="character_remark" jdbcType="VARCHAR" property="characterRemark" />
+    <result column="ability_remark" jdbcType="VARCHAR" property="abilityRemark" />
+    <result column="other_remark" jdbcType="VARCHAR" property="otherRemark" />
+    <result column="composite_score" jdbcType="INTEGER" property="compositeScore" />
+    <result column="time_used" jdbcType="VARCHAR" property="timeUsed" />
+  </resultMap>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+      record_id, section_id, s_id, s_name, looks_remark, character_remark, ability_remark,
+      other_remark, composite_score, time_used
+    from record
+    where record_id = #{recordId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from record
+    where record_id = #{recordId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.frank.entity.Record">
+    insert into record (record_id, section_id, s_id, 
+      s_name, looks_remark, character_remark, 
+      ability_remark, other_remark, composite_score, 
+      time_used)
+    values (#{recordId,jdbcType=INTEGER}, #{sectionId,jdbcType=INTEGER}, #{sId,jdbcType=INTEGER}, 
+      #{sName,jdbcType=VARCHAR}, #{looksRemark,jdbcType=VARCHAR}, #{characterRemark,jdbcType=VARCHAR}, 
+      #{abilityRemark,jdbcType=VARCHAR}, #{otherRemark,jdbcType=VARCHAR}, #{compositeScore,jdbcType=INTEGER}, 
+      #{timeUsed,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.frank.entity.Record">
+    insert into record
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="recordId != null">
+        record_id,
+      </if>
+      <if test="sectionId != null">
+        section_id,
+      </if>
+      <if test="sId != null">
+        s_id,
+      </if>
+      <if test="sName != null">
+        s_name,
+      </if>
+      <if test="looksRemark != null">
+        looks_remark,
+      </if>
+      <if test="characterRemark != null">
+        character_remark,
+      </if>
+      <if test="abilityRemark != null">
+        ability_remark,
+      </if>
+      <if test="otherRemark != null">
+        other_remark,
+      </if>
+      <if test="compositeScore != null">
+        composite_score,
+      </if>
+      <if test="timeUsed != null">
+        time_used,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="recordId != null">
+        #{recordId,jdbcType=INTEGER},
+      </if>
+      <if test="sectionId != null">
+        #{sectionId,jdbcType=INTEGER},
+      </if>
+      <if test="sId != null">
+        #{sId,jdbcType=INTEGER},
+      </if>
+      <if test="sName != null">
+        #{sName,jdbcType=VARCHAR},
+      </if>
+      <if test="looksRemark != null">
+        #{looksRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="characterRemark != null">
+        #{characterRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="abilityRemark != null">
+        #{abilityRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="otherRemark != null">
+        #{otherRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="compositeScore != null">
+        #{compositeScore,jdbcType=INTEGER},
+      </if>
+      <if test="timeUsed != null">
+        #{timeUsed,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.frank.entity.Record">
+    update record
+    <set>
+      <if test="sectionId != null">
+        section_id = #{sectionId,jdbcType=INTEGER},
+      </if>
+      <if test="sId != null">
+        s_id = #{sId,jdbcType=INTEGER},
+      </if>
+      <if test="sName != null">
+        s_name = #{sName,jdbcType=VARCHAR},
+      </if>
+      <if test="looksRemark != null">
+        looks_remark = #{looksRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="characterRemark != null">
+        character_remark = #{characterRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="abilityRemark != null">
+        ability_remark = #{abilityRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="otherRemark != null">
+        other_remark = #{otherRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="compositeScore != null">
+        composite_score = #{compositeScore,jdbcType=INTEGER},
+      </if>
+      <if test="timeUsed != null">
+        time_used = #{timeUsed,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where record_id = #{recordId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.frank.entity.Record">
+    update record
+    set section_id = #{sectionId,jdbcType=INTEGER},
+      s_id = #{sId,jdbcType=INTEGER},
+      s_name = #{sName,jdbcType=VARCHAR},
+      looks_remark = #{looksRemark,jdbcType=VARCHAR},
+      character_remark = #{characterRemark,jdbcType=VARCHAR},
+      ability_remark = #{abilityRemark,jdbcType=VARCHAR},
+      other_remark = #{otherRemark,jdbcType=VARCHAR},
+      composite_score = #{compositeScore,jdbcType=INTEGER},
+      time_used = #{timeUsed,jdbcType=VARCHAR}
+    where record_id = #{recordId,jdbcType=INTEGER}
+  </update>
+  <delete id="clearRecord">
+    truncate table record
+  </delete>
+</mapper>

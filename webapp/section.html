@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>部门面试房间</title>
+    <meta s_name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="static/css/bootstrap.css">
+    <link rel="stylesheet" href="static/css/bumen.css">
+</head>
+<body>
+
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">选择部门</h4>
+            </div>
+            <div class="modal-body">
+                <button type="button" class="btn btn-default btn-lg" data-dismiss="modal" value="1" >组织部</button>
+                <button type="button" class="btn btn-default btn-lg" data-dismiss="modal" value="2" >权益中心</button>
+                <button type="button" class="btn btn-default btn-lg" data-dismiss="modal" value="3" >办公室</button>
+                <button type="button" class="btn btn-default btn-lg" data-dismiss="modal" value="4" >公关部</button>
+                <button type="button" class="btn btn-default btn-lg" data-dismiss="modal" value="5" >宣传部</button>
+                <button type="button" class="btn btn-default btn-lg" data-dismiss="modal" value="6" >网技部</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<nav class="bm_nav">
+    <h1>部门面试房间</h1>
+    <h2 id="timer">时间：00:00</h2>
+    <h2>等待人数：5</h2>
+</nav>
+
+<div class="container-fluid" style="margin-top:20px;">
+    <div class="row">
+        <div class="col-md-8">
+            <div class="panel panel-warning">
+                <div class="panel-heading">
+                    <h3 class="panel-title">相貌</h3>
+                </div>
+                <div class="panel-body">
+                    <textarea class="bm_input" placeholder="写一下评语"></textarea>
+                </div>
+            </div>
+            <div class="panel panel-info">
+                <div class="panel-heading">
+                    <h3 class="panel-title">性格</h3>
+                </div>
+                <div class="panel-body">
+                    <textarea class="bm_input" placeholder="写一下评语"></textarea>
+                </div>
+            </div>
+            <div class="panel panel-success">
+                <div class="panel-heading">
+                    <h3 class="panel-title">能力</h3>
+                </div>
+                <div class="panel-body">
+                    <textarea class="bm_input" placeholder="写一下评语"></textarea>
+                </div>
+            </div>
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">其他</h3>
+                </div>
+                <div class="panel-body">
+                    <textarea class="bm_input" placeholder="写一下评语"></textarea>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="col-md-4">
+            <div class="panel panel-primary">
+                <div class="panel-heading" style="text-align: center">
+                    <h3 class="panel-title">面试者</h3>
+                </div>
+                <div class="panel-body">
+                    <p>某某某</p>
+                </div>
+            </div>
+            <div class="panel panel-danger">
+                <div class="panel-heading" style="text-align: center">
+                    <h3 class="panel-title">综合评分</h3>
+                </div>
+                <div class="panel-body">
+                    <input type="number" min="0" max="100" placeholder="分数">
+                </div>
+            </div>
+
+
+            <div class="bm_btn_group">
+                <button id="btn_start" class="btn btn-success btn-lg btn-block" data-loading-text="进行中">开始面试</button>
+                <button id="btn_skip" class="btn btn-danger btn-lg btn-block">跳过此人</button>
+                <button id="btn_done" class="btn btn-warning btn-lg btn-block" disabled="disabled">面试完毕</button>
+                <button id="btn_out" class="btn btn-info btn-lg btn-block">查看记录</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="static/js/jquery-3.1.0.min.js"></script>
+<script src="static/js/bootstrap.js"></script>
+<script>
+
+    var timer = null;
+    var min=0;
+    var sec=0;
+    var waitNum=0;
+    var loopNext;
+    var section_id = 0;
+
+    $(function () {
+       $("#myModal").modal();
+    });
+
+    $(".modal-body button").on('click',function () {
+        section_id = $(this).attr("value");
+        $(".bm_nav h1").text($(this).text()+"面试房间");
+    });
+
+    $(getNext());
+
+    $(getWaitNum());
+
+    function getWaitNum() {
+        var loopGetWaitNum = setInterval(function () {
+            //获取排队人数
+            //waitNum更新
+        },1000);
+    }
+
+    function getNext() {
+        loopNext = setInterval(function () {
+            //获取当前面试者,覆盖名字
+            //clearInterval(loopNext);获取到就取消
+        },500);
+    }
+
+    $('#btn_start').on('click', function () {
+        $(this).button('loading');
+        $("#btn_skip").attr("disabled", true);
+        $("#btn_done").attr("disabled", false);
+
+        clearInterval(timer);
+        timer = setInterval(showTime,1000);
+    });
+
+    $("#btn_skip").on('click',function () {
+        //跳过此人
+        getNext();
+    });
+
+    $('#btn_done').on('click', function () {
+        $(this).attr("disabled", true);
+        $("#btn_start").button('reset');
+        $("#btn_skip").attr("disabled", false);
+        clearInterval(timer);
+        min = 0;
+        sec = 0;
+        $("#timer").html("时间：00:00");
+        getNext();
+    });
+
+
+    function showTime(){
+        sec++;
+        if(sec==60){
+            min++;
+            sec=0;
+        }
+        var secStr = sec;
+        if(sec < 10){
+            secStr = "0"+sec;
+        }
+        var minStr = min;
+        if(min < 10){
+            minStr = "0"+min;
+        }
+
+        $("#timer").html("时间："+minStr+":"+secStr);
+    }
+
+
+
+
+</script>
+</body>
+</html>

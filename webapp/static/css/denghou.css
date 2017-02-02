@@ -1,0 +1,61 @@
+*{
+    margin: 0;
+    padding: 0;
+    border: 0;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none !important;
+    margin: 0;
+}
+
+body{
+    background: #ffffff;
+}
+
+.dh_nav{
+    background: #428bca;
+    width: 100%;
+}
+
+.dh_nav h1{
+    height:60px;
+    font-size: 30px;
+    color: #ffffff;
+    margin-left: 30px;
+    line-height: 60px;
+    margin-top:0;
+    margin-bottom:0;
+    display: inline;
+}
+
+.dh_sign{
+    margin-top:30px;
+    width:100%;
+    text-align: center;
+}
+
+.dh_label{
+    font-size: 16px;
+}
+
+.dh_panel_title{
+    text-align: center;
+    font-size: 20px
+}
+
+.dh_span{
+    text-align: center;
+}
+
+.list-group li{
+    text-align: center;
+    font-size:18px;
+}
+
+select{
+    border: 1px solid #cccccc;
+    font-size: 16px;
+    margin-left:5px;
+}

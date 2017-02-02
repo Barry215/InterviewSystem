@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.frank.dao.SectionMapper">
+  <resultMap id="BaseResultMap" type="com.frank.entity.Section">
+    <id column="section_id" jdbcType="INTEGER" property="sectionId" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="student_id" jdbcType="INTEGER" property="studentId" />
+    <result column="state" jdbcType="INTEGER" property="state" />
+  </resultMap>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+      section_id, `name`, student_id, state
+    from section
+    where section_id = #{sectionId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from section
+    where section_id = #{sectionId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.frank.entity.Section">
+    insert into section (section_id, `name`, student_id, state)
+    values (#{sectionId,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{studentId,jdbcType=INTEGER}, 
+      #{state,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.frank.entity.Section">
+    insert into section
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="sectionId != null">
+        section_id,
+      </if>
+      <if test="name != null">
+        `name`,
+      </if>
+      <if test="studentId != null">
+        student_id,
+      </if>
+      <if test="state != null">
+        state,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="sectionId != null">
+        #{sectionId,jdbcType=INTEGER},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="studentId != null">
+        #{studentId,jdbcType=INTEGER},
+      </if>
+      <if test="state != null">
+        #{state,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.frank.entity.Section">
+    update section
+    <set>
+      <if test="name != null">
+        `name` = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="studentId != null">
+        student_id = #{studentId,jdbcType=INTEGER},
+      </if>
+      <if test="state != null">
+        state = #{state,jdbcType=INTEGER},
+      </if>
+    </set>
+    where section_id = #{sectionId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.frank.entity.Section">
+    update section
+    set `name` = #{name,jdbcType=VARCHAR},
+      student_id = #{studentId,jdbcType=INTEGER},
+      state = #{state,jdbcType=INTEGER}
+    where section_id = #{sectionId,jdbcType=INTEGER}
+  </update>
+</mapper>

@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta s_name="viewport" content="width=device-width, initial-scale=1">
+    <title>面试管理系统</title>
+    <link rel="stylesheet" href="static/css/custom.css">
+</head>
+<body>
+
+<div id="container" class="main">
+    <h1 class="head_title">膳管会面试系统</h1>
+    <h2 class="headline"><a href="screen.html">大屏幕</a></h2>
+    <h2 class="headline"><a href="section.html">部门面试</a></h2>
+</div>
+
+<script src="static/js/jquery-3.1.0.min.js"></script>
+
+<script>
+    $(function(){
+        $("#container").height($(window).height())
+                .width($(window).width());
+    });
+
+</script>
+
+</body>
+</html>

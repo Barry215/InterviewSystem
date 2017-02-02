@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd">
+
+    <context:component-scan base-package= "com.frank.controller" />
+
+    <mvc:annotation-driven />
+
+    <!--<bean class="com.frank.swagger.RestApiConfig"/>-->
+
+    <!--配置swagger2-->
+    <mvc:default-servlet-handler/>
+
+    <!--配置swagger2的注解模式-->
+    <!--当使用<context:component-scan />后，就可以将<context:annotation-config />移除了-->
+    <!--<context:annotation-config />-->
+
+    <!-- Enables swgger ui-->
+    <!--<mvc:resources mapping="swagger-ui.html" location="classpath:/META-INF/resources/"/>-->
+    <!--<mvc:resources mapping="/webjars/**" location="classpath:/META-INF/resources/webjars/"/>-->
+
+    <!--表示当浏览器有静态资源请求的时候，并且请求url路径中带有：/js/，则这个资源跑到webapp目录下的/WEB-INF/statics/js/去找-->
+    <!--<mvc:resources mapping="/css/**" location="/WEB-INF/statics/css/"/>-->
+    <!--<mvc:resources mapping="/js/**" location="/WEB-INF/statics/js/"/>-->
+    <!--<mvc:resources mapping="/images/**" location="/WEB-INF/statics/images/"/>-->
+
+    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="viewClass" value="org.springframework.web.servlet.view.JstlView" />
+        <property name="prefix" value="/" />
+        <property name="suffix" value=".html" />
+    </bean>
+
+    <!-- 文件上传配置注意:这里申明的id必须为multipartResolver -->
+    <!--<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">-->
+        <!--<property s_name="defaultEncoding" value="utf-8" />-->
+        <!--<property s_name="maxUploadSize" value="5242880" />-->
+    <!--</bean>-->
+
+    <!--@Value("#{configProperties['imgFile.path']}")-->
+    <!--private String imgFilePath的配置-->
+    <!--<bean id="configProperties" class="org.springframework.beans.factory.config.PropertiesFactoryBean">-->
+        <!--<property s_name="locations">-->
+            <!--<list>-->
+                <!--<value>classpath:filePath.properties</value>-->
+            <!--</list>-->
+        <!--</property>-->
+    <!--</bean>-->
+    <!--<bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PreferencesPlaceholderConfigurer">-->
+        <!--<property s_name="properties" ref="configProperties"/>-->
+    <!--</bean>-->
+
+    <!-- 配置拦截器 -->
+    <!--<mvc:interceptors>-->
+        <!--&lt;!&ndash; 多个拦截器，顺序执行 &ndash;&gt;-->
+        <!--<mvc:interceptor>-->
+            <!--&lt;!&ndash; /** 表示所有的url，包括子url路径 &ndash;&gt;-->
+            <!--<mvc:mapping path="/user/**"/>-->
+            <!--<mvc:mapping path="/project/**"/>-->
+            <!--<mvc:mapping path="/article/**"/>-->
+            <!--<mvc:mapping path="/document/**"/>-->
+            <!--<mvc:mapping path="/notice/**"/>-->
+            <!--<mvc:mapping path="/folder/**"/>-->
+            <!--<mvc:exclude-mapping path="/user/signIn/**"/>-->
+            <!--<mvc:exclude-mapping path="/user/signUp/**"/>-->
+            <!--<mvc:exclude-mapping path="/user/img/**"/>-->
+            <!--<mvc:exclude-mapping path="/user/files/**"/>-->
+            <!--<bean class="com.frank.interceptor.CommonInterceptor"/>-->
+        <!--</mvc:interceptor>-->
+    <!--</mvc:interceptors>-->
+</beans>
