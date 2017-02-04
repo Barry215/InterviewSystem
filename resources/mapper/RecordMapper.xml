@@ -150,4 +150,11 @@
   <delete id="clearRecord">
     truncate table record
   </delete>
+  <select id="selectBySectionId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    record_id, section_id, s_id, s_name, looks_remark, character_remark, ability_remark,
+    other_remark, composite_score, time_used
+    from record
+    where section_id = #{sectionId,jdbcType=INTEGER}
+  </select>
 </mapper>

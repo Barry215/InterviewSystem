@@ -4,10 +4,14 @@ import com.frank.dto.JsonResult;
 import com.frank.entity.Record;
 import com.frank.entity.Student;
 import com.frank.service.InterviewService;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.OutputStream;
 
 /**
  * Created by frank on 17/2/2.
@@ -64,10 +68,26 @@ public class SectionController {
         return new JsonResult<>(true);
     }
 
+    @RequestMapping(value = "/{section_id}/getRecords", method = RequestMethod.GET, produces = {"application/json;charset=UTF-8"})
+    @ResponseBody
+    public JsonResult<?> getRecords(@PathVariable int section_id){
+        return new JsonResult<>(true,interviewService.getSectionRecords(section_id));
+    }
+
     @RequestMapping(value = "/{section_id}/exportRecords", method = RequestMethod.GET, produces = {"application/json;charset=UTF-8"})
     @ResponseBody
-    public JsonResult<?> exportRecords(@PathVariable int section_id){
-        return null;
+    public void exportRecords(@PathVariable int section_id,HttpServletResponse response){
+        HSSFWorkbook wb = interviewService.createExcel(section_id);
+        try {
+            response.setHeader("Content-Disposition", "attachment; filename=records.xls");
+            response.setContentType("application/vnd.ms-excel; charset=utf-8") ;
+            OutputStream out = response.getOutputStream() ;
+            wb.write(out) ;
+            out.flush();
+            out.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 

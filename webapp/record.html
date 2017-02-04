@@ -1,10 +1,62 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
     <title>查看面试记录</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="static/css/bootstrap.css">
+    <link rel="stylesheet" href="static/css/record.css">
 </head>
 <body>
+<table id="records_table" class="table table-striped table-hover table-bordered">
+    <caption>面试 记录</caption>
+    <tr>
+        <th>学号</th>
+        <th>姓名</th>
+        <th>相貌评语</th>
+        <th>性格评语</th>
+        <th>能力评语</th>
+        <th>其他评语</th>
+        <th>综合评分</th>
+        <th>面试用时</th>
+    </tr>
+</table>
 
+<button id="btn_export" class="btn btn-primary btn-block btn_div">导出记录</button>
+
+<script src="static/js/jquery-3.1.0.min.js"></script>
+<script src="static/js/bootstrap.js"></script>
+<script>
+
+
+    $(function () {
+        $.ajax({
+            type: "GET",
+            url: "/section/"+ location.search.substr(9) +"/getRecords",
+            dataType: "json",
+            success: function (data) {
+                var jsonResult = $.parseJSON(JSON.stringify(data));
+                if (jsonResult.success){
+                    $.each(jsonResult.data,function (index, record) {
+                        $("#records_table").append("<tr><td>"
+                                + record.sId +"</td><td>"
+                                + record.sName +"</td><td>"
+                                + record.looksRemark +"</td><td>"
+                                + record.characterRemark +"</td><td>"
+                                + record.abilityRemark +"</td><td>"
+                                + record.otherRemark +"</td><td>"
+                                + record.compositeScore +"</td><td>"
+                                + record.timeUsed +"</td></tr>");
+                    });
+                }
+            }
+        });
+    });
+
+    $('#btn_export').on('click', function (){
+
+    });
+
+</script>
 </body>
 </html>

@@ -94,7 +94,7 @@
                 <button id="btn_start" class="btn btn-success btn-lg btn-block" data-loading-text="进行中">开始面试</button>
                 <button id="btn_skip" class="btn btn-danger btn-lg btn-block">跳过此人</button>
                 <button id="btn_done" class="btn btn-warning btn-lg btn-block" disabled="disabled">面试完毕</button>
-                <button id="btn_out" class="btn btn-info btn-lg btn-block">查看记录</button>
+                <button id="btn_check" class="btn btn-info btn-lg btn-block">查看记录</button>
             </div>
         </div>
     </div>
@@ -245,6 +245,10 @@
     });
 
 
+    $('#btn_check').on('click', function (){
+        window.open("/record.html?section="+section_id);
+    });
+
     function showTime(){
         sec++;
         if(sec==60){
@@ -262,9 +266,6 @@
 
         $("#timer").html("时间："+minStr+":"+secStr);
     }
-
-
-
 
 </script>
 </body>

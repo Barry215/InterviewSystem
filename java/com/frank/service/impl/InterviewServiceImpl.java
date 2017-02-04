@@ -9,9 +9,14 @@ import com.frank.entity.Section;
 import com.frank.entity.Student;
 import com.frank.service.InterviewService;
 import com.frank.service.QueueService;
+import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * Created by frank on 17/2/2.
@@ -116,5 +121,57 @@ public class InterviewServiceImpl implements InterviewService {
         section.setState(0);
         section.setStudentId(null);
         sectionMapper.updateByPrimaryKey(section);
+    }
+
+    @Override
+    public List<Record> getSectionRecords(int section_id) {
+        return recordMapper.selectBySectionId(section_id);
+    }
+
+    @Override
+    public HSSFWorkbook createExcel(int section_id) {
+        HSSFWorkbook wb = new HSSFWorkbook();
+
+        HSSFSheet sheet = wb.createSheet("RecordSheet");
+        sheet.autoSizeColumn(1);
+        sheet.autoSizeColumn(1, true);
+
+        List<Record> recordList = getSectionRecords(section_id);
+
+        for (int i=0;i<recordList.size();i++){
+
+            Row row = sheet.createRow(i+1);
+
+            Record record = recordList.get(i);
+
+            Cell cell_0 = row.createCell(0);
+            Cell cell_1 = row.createCell(1);
+            Cell cell_2 = row.createCell(2);
+            Cell cell_3 = row.createCell(3);
+            Cell cell_4 = row.createCell(4);
+            Cell cell_5 = row.createCell(5);
+            Cell cell_6 = row.createCell(6);
+            Cell cell_7 = row.createCell(7);
+
+            cell_0.setCellValue(record.getsId()+"");
+            cell_1.setCellValue(record.getsName());
+            if (record.getLooksRemark() != null){
+                cell_2.setCellValue(record.getLooksRemark());
+            }
+            if (record.getCharacterRemark() != null){
+                cell_3.setCellValue(record.getCharacterRemark());
+            }
+            if (record.getAbilityRemark() != null){
+                cell_4.setCellValue(record.getAbilityRemark());
+            }
+            if (record.getOtherRemark() != null){
+                cell_5.setCellValue(record.getOtherRemark());
+            }
+            if (record.getLooksRemark() != null){
+                cell_6.setCellValue(record.getCompositeScore()+"");
+            }
+            cell_7.setCellValue(record.getTimeUsed());
+        }
+        return wb;
     }
 }

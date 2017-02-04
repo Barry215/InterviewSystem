@@ -2,6 +2,9 @@ package com.frank.service;
 
 import com.frank.entity.Record;
 import com.frank.entity.Student;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+
+import java.util.List;
 
 /**
  * Created by frank on 17/2/2.
@@ -26,4 +29,8 @@ public interface InterviewService {
     void doneInterview(Record record);
 
     void freeSection(int section_id);
+
+    List<Record> getSectionRecords(int section_id);
+
+    HSSFWorkbook createExcel(int section_id);
 }

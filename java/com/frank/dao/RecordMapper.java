@@ -2,6 +2,8 @@ package com.frank.dao;
 
 import com.frank.entity.Record;
 
+import java.util.List;
+
 public interface RecordMapper {
     int deleteByPrimaryKey(Integer recordId);
 
@@ -16,4 +18,6 @@ public interface RecordMapper {
     int updateByPrimaryKey(Record record);
 
     int clearRecord();
+
+    List<Record> selectBySectionId(Integer sectionId);
 }

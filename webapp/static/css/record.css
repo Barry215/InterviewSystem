@@ -1,0 +1,18 @@
+.table caption{
+    text-align: center;
+    font-size:30px;
+    color: #2e6da4;
+}
+
+.table tr th,.table tr td{
+    text-align: center;
+    min-width: 80px;
+    font-size: 15px;
+}
+
+.btn_div{
+    width: 30%;
+    height: 40px;
+    margin: 50px auto;
+    font-size:16px;
+}
