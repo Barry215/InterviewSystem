@@ -2,7 +2,7 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta s_name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>等候室</title>
     <link rel="stylesheet" href="static/css/bootstrap.css">
     <link rel="stylesheet" href="static/css/denghou.css">
@@ -39,16 +39,16 @@
     <div class="form-inline">
         <div class="form-group">
             <label class="dh_label" for="student_id">学号</label>
-            <input type="number" class="form-control" id="student_id" s_name="student_id" placeholder="17062525" value="">
+            <input type="number" class="form-control" id="student_id" name="student_id" placeholder="17062525" value="">
         </div>
         <div class="form-group" style="margin-left: 20px">
             <label class="dh_label" for="student_name">姓名</label>
-            <input type="text" class="form-control" id="student_name" s_name="student_name" placeholder="张三" value="">
+            <input type="text" class="form-control" id="student_name" name="student_name" placeholder="张三" value="">
         </div>
 
         <label class="dh_label" for="select_1" style="margin-left: 20px">第一志愿</label>
 
-        <select id="select_1" title="第一志愿" s_name="firstWith">
+        <select id="select_1" title="第一志愿" name="firstWith">
             <option value="1">组织部</option>
             <option value="2">权益中心</option>
             <option value="3">办公室</option>
@@ -59,7 +59,7 @@
 
         <label class="dh_label" for="select_2" style="margin-left: 20px">第二志愿</label>
 
-        <select id="select_2" title="第二志愿" s_name="second_wish">
+        <select id="select_2" title="第二志愿" name="second_wish">
             <option value="1">组织部</option>
             <option value="2">权益中心</option>
             <option value="3">办公室</option>
@@ -78,7 +78,7 @@
 
                 <div class="panel-heading dh_panel_title">组织部</div>
                 <div class="panel-body dh_span">
-                    <span style="font-size: 18px; color: orange">有个人 准备</span>
+                    <span id="span_1" style="font-size: 18px; color: green">空 闲</span>
                 </div>
 
                 <ul id="ul_1" class="list-group">
@@ -92,7 +92,7 @@
 
                 <div class="panel-heading dh_panel_title">权益中心</div>
                 <div class="panel-body dh_span">
-                    <span style="font-size: 18px; color: red">有个人 面试中</span>
+                    <span id="span_2" style="font-size: 18px; color: green">空 闲</span>
                 </div>
 
                 <ul id="ul_2" class="list-group">
@@ -106,7 +106,7 @@
 
                 <div class="panel-heading dh_panel_title">办公室</div>
                 <div class="panel-body dh_span">
-                    <span style="font-size: 18px; color: green">空 闲</span>
+                    <span id="span_3" style="font-size: 18px; color: green">空 闲</span>
                 </div>
 
                 <ul id="ul_3" class="list-group">
@@ -120,7 +120,7 @@
 
                 <div class="panel-heading dh_panel_title">公关部</div>
                 <div class="panel-body dh_span">
-                    <span style="font-size: 18px; color: orange">有个人 准备</span>
+                    <span id="span_4" style="font-size: 18px; color: green">空 闲</span>
                 </div>
 
                 <ul id="ul_4" class="list-group">
@@ -134,7 +134,7 @@
 
                 <div class="panel-heading dh_panel_title">宣传部</div>
                 <div class="panel-body dh_span">
-                    <span style="font-size: 18px; color: red">有个人 面试中</span>
+                    <span id="span_5" style="font-size: 18px; color: green">空 闲</span>
                 </div>
 
                 <ul id="ul_5" class="list-group">
@@ -148,7 +148,7 @@
 
                 <div class="panel-heading dh_panel_title">网技部</div>
                 <div class="panel-body dh_span">
-                    <span style="font-size: 18px; color: red">有个人 面试中</span>
+                    <span id="span_6" style="font-size: 18px; color: green">空 闲</span>
                 </div>
 
                 <ul id="ul_6" class="list-group">
@@ -168,15 +168,15 @@
 
 //    var count = 0;
 
-    var index;
+    var li_index;
 
     var ul_id = "";
 
     $("#btn_qd").on("click",function () {
         var value_s_id = $("#student_id").val();
         var value_s_name = $("#student_name").val();
-        var queue_wish_1 = $("#select_1").val();
-        var queue_wish_2 = $("#select_2").val();
+        var queue_wish_1 = parseInt($("#select_1").val());
+        var queue_wish_2 = parseInt($("#select_2").val());
 
         if (value_s_id!="" && value_s_name!=""){
             if (queue_wish_1 == queue_wish_2){
@@ -192,41 +192,96 @@
         }else {
             alert("请填写完整");
         }
+
+        var student = {
+            sId: parseInt(value_s_id),
+            sName: value_s_name,
+            firstWish: queue_wish_1,
+            secondWish: queue_wish_2
+        };
+
+        $.ajax({
+            type: "POST",
+            url: "/screen/sign",
+            data: JSON.stringify(student),
+            dataType: "json",
+            contentType:"application/json;charset=UTF-8",
+            success: function (data) {
+                var jsonResult = $.parseJSON(JSON.stringify(data));
+                if (jsonResult.success){
+                    console.log("签到成功");
+                }else {
+                    console.log("签到失败");
+                }
+            }
+        });
     });
 
+    //置顶
     $("#btn_modal_1").click(function () {
-        var jq_li = $("#"+ul_id+" li:eq("+index+")");
+        var jq_li = $("#"+ul_id+" li:eq("+li_index+")");
         var text = jq_li.html();
         jq_li.remove();
 //        $("#"+ul_id).prepend('<li id="li_'+count+'" class="list-group-item">'+text+"</li>");
         $("#"+ul_id).prepend('<li class="list-group-item">'+text+"</li>");
 //        count++;
         $('#myModal').modal('hide');
+
+        $.ajax({
+            type: "GET",
+            url: "/screen/stick/"+ ul_id.substr(3) +"/"+li_index,
+            dataType: "json",
+            contentType:"application/json;charset=UTF-8",
+            success: function (data) {
+                var jsonResult = $.parseJSON(JSON.stringify(data));
+                if (jsonResult.success){
+                    console.log("置顶成功");
+                }else {
+                    console.log("置顶失败");
+                }
+            }
+        });
     });
 
+    //删除
     $("#btn_modal_2").click(function () {
-        $("#"+ul_id+" li:eq("+index+")").remove();
+        $("#"+ul_id+" li:eq("+li_index+")").remove();
         $('#myModal').modal('hide');
+
+        $.ajax({
+            type: "GET",
+            url: "/screen/remove/"+ ul_id.substr(3) +"/"+li_index,
+            dataType: "json",
+            contentType:"application/json;charset=UTF-8",
+            success: function (data) {
+                var jsonResult = $.parseJSON(JSON.stringify(data));
+                if (jsonResult.success){
+                    console.log("删除成功");
+                }else {
+                    console.log("删除失败");
+                }
+            }
+        });
     });
 
     function appendList(value,s_name) {
         switch(value){
-            case "1":
+            case 1:
                 $("#ul_1").append('<li class="list-group-item">'+s_name+"</li>");
                 break;
-            case "2":
+            case 2:
                 $("#ul_2").append('<li class="list-group-item">'+s_name+"</li>");
                 break;
-            case "3":
+            case 3:
                 $("#ul_3").append('<li class="list-group-item">'+s_name+"</li>");
                 break;
-            case "4":
+            case 4:
                 $("#ul_4").append('<li class="list-group-item">'+s_name+"</li>");
                 break;
-            case "5":
+            case 5:
                 $("#ul_5").append('<li class="list-group-item">'+s_name+"</li>");
                 break;
-            case "6":
+            case 6:
                 $("#ul_6").append('<li class="list-group-item">'+s_name+"</li>");
                 break;
         }
@@ -244,7 +299,7 @@
 
 
     $(".list-group").on('mousedown','li',function () {
-        index = $(this).index();
+        li_index = $(this).index();
         var s_name = $(this).text();
         ul_id = $(this).parent().attr('id');
         timeout = setTimeout(function() {
@@ -260,6 +315,118 @@
     $(".list-group").on('mouseout','li',function () {
         clearTimeout(timeout);
     });
+
+
+    $(function () {
+        setInterval(function () {
+            $.ajax({
+                type: "GET",
+                url: "/screen/initQueue",
+                dataType: "json",
+                success: function(data){
+                    var jsonResult = $.parseJSON(JSON.stringify(data));
+
+                    $.each(jsonResult.data,function(index, queueInfo){
+                        var sec_state = queueInfo.sec_state;
+                        var stu_name = queueInfo.stu_name;
+                        var queueList = queueInfo.queueList;
+                        updateSpan(index+1,stu_name,sec_state);
+                        $("#ul_"+(index+1)+" li").remove();
+                        updateQueue(index+1,queueList);
+                    });
+                }
+            });
+        },2000);
+    });
+
+//    $(function () {
+//        setInterval(function () {
+//            $.ajax({
+//                type: "GET",
+//                url: "/screen/getSectionState",
+//                dataType: "json",
+//                success: function(data){
+//                    var jsonResult = $.parseJSON(JSON.stringify(data));
+//
+//                    $.each(jsonResult.data,function(index, sectionState){
+//                        var sec_state = sectionState.sec_state;
+//                        var stu_name = sectionState.stu_name;
+//                        var spanText = $("#span_"+(index+1)).text();
+//
+//
+//                        updateSpan(index+1,stu_name,sec_state);
+//                    });
+//                }
+//            });
+//        },1000);
+//    });
+
+
+
+    function updateSpan(index, stu_name, sec_state) {
+        switch (index){
+            case 1:
+                if (sec_state == 0){
+                    $("#span_1").text("空 闲").css("color","green");
+                }else if (sec_state == 1){
+                    $("#span_1").text(stu_name+" 准备").css("color","orange");
+                }else if (sec_state == 2){
+                    $("#span_1").text(stu_name+" 面试中").css("color","red");
+                }
+                break;
+            case 2:
+                if (sec_state == 0){
+                    $("#span_2").text("空 闲").css("color","green");
+                }else if (sec_state == 1){
+                    $("#span_2").text(stu_name+" 准备").css("color","orange");
+                }else if (sec_state == 2){
+                    $("#span_2").text(stu_name+" 面试中").css("color","red");
+                }
+                break;
+            case 3:
+                if (sec_state == 0){
+                    $("#span_3").text("空 闲").css("color","green");
+                }else if (sec_state == 1){
+                    $("#span_3").text(stu_name+" 准备").css("color","orange");
+                }else if (sec_state == 2){
+                    $("#span_3").text(stu_name+" 面试中").css("color","red");
+                }
+                break;
+            case 4:
+                if (sec_state == 0){
+                    $("#span_4").text("空 闲").css("color","green");
+                }else if (sec_state == 1){
+                    $("#span_4").text(stu_name+" 准备").css("color","orange");
+                }else if (sec_state == 2){
+                    $("#span_4").text(stu_name+" 面试中").css("color","red");
+                }
+                break;
+            case 5:
+                if (sec_state == 0){
+                    $("#span_5").text("空 闲").css("color","green");
+                }else if (sec_state == 1){
+                    $("#span_5").text(stu_name+" 准备").css("color","orange");
+                }else if (sec_state == 2){
+                    $("#span_5").text(stu_name+" 面试中").css("color","red");
+                }
+                break;
+            case 6:
+                if (sec_state == 0){
+                    $("#span_6").text("空 闲").css("color","green");
+                }else if (sec_state == 1){
+                    $("#span_6").text(stu_name+" 准备").css("color","orange");
+                }else if (sec_state == 2){
+                    $("#span_6").text(stu_name+" 面试中").css("color","red");
+                }
+                break;
+        }
+    }
+
+    function updateQueue(index, queueList) {
+        $.each(queueList,function (queue_index, queueName) {
+            appendList(index,queueName);
+        });
+    }
 
 </script>
 

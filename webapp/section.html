@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>部门面试房间</title>
-    <meta s_name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="static/css/bootstrap.css">
     <link rel="stylesheet" href="static/css/bumen.css">
 </head>
@@ -30,7 +30,7 @@
 <nav class="bm_nav">
     <h1>部门面试房间</h1>
     <h2 id="timer">时间：00:00</h2>
-    <h2>等待人数：5</h2>
+    <h2 id="waitNum">等待人数：5</h2>
 </nav>
 
 <div class="container-fluid" style="margin-top:20px;">
@@ -41,7 +41,7 @@
                     <h3 class="panel-title">相貌</h3>
                 </div>
                 <div class="panel-body">
-                    <textarea class="bm_input" placeholder="写一下评语"></textarea>
+                    <textarea id="textarea_1" class="bm_input" placeholder="写一下评语"></textarea>
                 </div>
             </div>
             <div class="panel panel-info">
@@ -49,7 +49,7 @@
                     <h3 class="panel-title">性格</h3>
                 </div>
                 <div class="panel-body">
-                    <textarea class="bm_input" placeholder="写一下评语"></textarea>
+                    <textarea id="textarea_2" class="bm_input" placeholder="写一下评语"></textarea>
                 </div>
             </div>
             <div class="panel panel-success">
@@ -57,7 +57,7 @@
                     <h3 class="panel-title">能力</h3>
                 </div>
                 <div class="panel-body">
-                    <textarea class="bm_input" placeholder="写一下评语"></textarea>
+                    <textarea id="textarea_3" class="bm_input" placeholder="写一下评语"></textarea>
                 </div>
             </div>
             <div class="panel panel-default">
@@ -65,7 +65,7 @@
                     <h3 class="panel-title">其他</h3>
                 </div>
                 <div class="panel-body">
-                    <textarea class="bm_input" placeholder="写一下评语"></textarea>
+                    <textarea id="textarea_4" class="bm_input" placeholder="写一下评语"></textarea>
                 </div>
             </div>
         </div>
@@ -77,7 +77,7 @@
                     <h3 class="panel-title">面试者</h3>
                 </div>
                 <div class="panel-body">
-                    <p>某某某</p>
+                    <p id="interviewee">某某某</p>
                 </div>
             </div>
             <div class="panel panel-danger">
@@ -85,7 +85,7 @@
                     <h3 class="panel-title">综合评分</h3>
                 </div>
                 <div class="panel-body">
-                    <input type="number" min="0" max="100" placeholder="分数">
+                    <input id="input_score" type="number" min="0" max="100" placeholder="分数">
                 </div>
             </div>
 
@@ -109,7 +109,8 @@
     var sec=0;
     var waitNum=0;
     var loopNext;
-    var section_id = 0;
+    var section_id=0;
+    var stu_id=0;
 
     $(function () {
        $("#myModal").modal();
@@ -125,17 +126,40 @@
     $(getWaitNum());
 
     function getWaitNum() {
-        var loopGetWaitNum = setInterval(function () {
-            //获取排队人数
-            //waitNum更新
-        },1000);
+        setInterval(function () {
+            $.ajax({
+                type: "GET",
+                url: "/section/"+section_id+"/getWaitNum",
+                dataType: "json",
+                success: function(data){
+                    var jsonResult = $.parseJSON(JSON.stringify(data));
+                    if (jsonResult.success){
+                        $("#waitNum").text("等待人数："+jsonResult.data);
+                    }
+                }
+            });
+        },2000);
     }
 
     function getNext() {
         loopNext = setInterval(function () {
-            //获取当前面试者,覆盖名字
-            //clearInterval(loopNext);获取到就取消
-        },500);
+            $.ajax({
+                type: "GET",
+                url: "/section/"+section_id+"/getInterviewee",
+                dataType: "json",
+                success: function(data){
+                    var jsonResult = $.parseJSON(JSON.stringify(data));
+                    if (jsonResult.success){
+                        $("#interviewee").text(jsonResult.data.sName);
+                        stu_id = jsonResult.data.sId;
+                        clearInterval(loopNext);
+                    }else {
+                        $("#interviewee").text("没 人");
+                        stu_id = 0;
+                    }
+                }
+            });
+        },2000);
     }
 
     $('#btn_start').on('click', function () {
@@ -145,10 +169,32 @@
 
         clearInterval(timer);
         timer = setInterval(showTime,1000);
+
+        $.ajax({
+            type: "GET",
+            url: "/section/"+section_id+"/beginInterview",
+            dataType: "json",
+            success: function(data){
+                var jsonResult = $.parseJSON(JSON.stringify(data));
+                if (jsonResult.success){
+                    console.log("开始面试");
+                }
+            }
+        });
     });
 
     $("#btn_skip").on('click',function () {
-        //跳过此人
+        $.ajax({
+            type: "GET",
+            url: "/section/"+section_id+"/skipInterview",
+            dataType: "json",
+            success: function(data){
+                var jsonResult = $.parseJSON(JSON.stringify(data));
+                if (jsonResult.success){
+                    console.log("跳过此人");
+                }
+            }
+        });
         getNext();
     });
 
@@ -159,7 +205,41 @@
         clearInterval(timer);
         min = 0;
         sec = 0;
+
+        var record = {
+            recordId:stu_id,
+            sectionId:section_id,
+            sId:stu_id,
+            sName:$("#interviewee").val(),
+            looksRemark:$("#textarea_1").val(),
+            characterRemark:$("#textarea_2").val(),
+            abilityRemark:$("#textarea_3").val(),
+            otherRemark:$("#textarea_4").val(),
+            compositeScore:$("#input_score").val(),
+            timeUsed:$("#timer").html().substr(3)
+        };
+
+        $("#textarea_1").val("");
+        $("#textarea_2").val("");
+        $("#textarea_3").val("");
+        $("#textarea_4").val("");
+        $("#input_score").val("");
         $("#timer").html("时间：00:00");
+
+
+        $.ajax({
+            type: "POST",
+            url: "/section/doneInterview",
+            data: record,
+            dataType: "json",
+            success: function(data){
+                var jsonResult = $.parseJSON(JSON.stringify(data));
+                if (jsonResult.success){
+                    console.log("面试完毕");
+                }
+            }
+        });
+
         getNext();
     });
 

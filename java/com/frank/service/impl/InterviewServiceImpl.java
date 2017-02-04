@@ -37,6 +37,7 @@ public class InterviewServiceImpl implements InterviewService {
         if (section.getState() != 0){
             return studentMapper.selectByPrimaryKey(section.getStudentId());
         }else {
+            queueService.queueOut(section_id);
             return null;
         }
     }
@@ -100,12 +101,12 @@ public class InterviewServiceImpl implements InterviewService {
 
     @Override
     public void skipInterview(int section_id) {
-        queueService.queueOut(section_id);
+        freeSection(section_id);
     }
 
     @Override
-    public void doneInterview(int section_id,Record record) {
-        queueService.queueOut(section_id);
+    public void doneInterview(Record record) {
+        freeSection(record.getSectionId());
         addRecord(record);
     }
 

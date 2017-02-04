@@ -23,7 +23,7 @@ public interface InterviewService {
 
     void skipInterview(int section_id);
 
-    void doneInterview(int section_id,Record record);
+    void doneInterview(Record record);
 
     void freeSection(int section_id);
 }
