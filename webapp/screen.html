@@ -204,8 +204,8 @@
             type: "POST",
             url: "/screen/sign",
             data: JSON.stringify(student),
-            dataType: "json",
-            contentType:"application/json;charset=UTF-8",
+            dataType: "json",   //response的内容是json格式
+            contentType:"application/json;charset=UTF-8",  //发送的内容是json
             success: function (data) {
                 var jsonResult = $.parseJSON(JSON.stringify(data));
                 if (jsonResult.success){
@@ -231,7 +231,6 @@
             type: "GET",
             url: "/screen/stick/"+ ul_id.substr(3) +"/"+li_index,
             dataType: "json",
-            contentType:"application/json;charset=UTF-8",
             success: function (data) {
                 var jsonResult = $.parseJSON(JSON.stringify(data));
                 if (jsonResult.success){
@@ -252,7 +251,6 @@
             type: "GET",
             url: "/screen/remove/"+ ul_id.substr(3) +"/"+li_index,
             dataType: "json",
-            contentType:"application/json;charset=UTF-8",
             success: function (data) {
                 var jsonResult = $.parseJSON(JSON.stringify(data));
                 if (jsonResult.success){

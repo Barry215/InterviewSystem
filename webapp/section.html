@@ -30,7 +30,7 @@
 <nav class="bm_nav">
     <h1>部门面试房间</h1>
     <h2 id="timer">时间：00:00</h2>
-    <h2 id="waitNum">等待人数：5</h2>
+    <h2 id="waitNum">等待人数：0</h2>
 </nav>
 
 <div class="container-fluid" style="margin-top:20px;">
@@ -117,7 +117,7 @@
     });
 
     $(".modal-body button").on('click',function () {
-        section_id = $(this).attr("value");
+        section_id = parseInt($(this).attr("value"));
         $(".bm_nav h1").text($(this).text()+"面试房间");
     });
 
@@ -159,7 +159,7 @@
                     }
                 }
             });
-        },2000);
+        },1500);
     }
 
     $('#btn_start').on('click', function () {
@@ -207,16 +207,16 @@
         sec = 0;
 
         var record = {
-            recordId:stu_id,
-            sectionId:section_id,
-            sId:stu_id,
-            sName:$("#interviewee").val(),
-            looksRemark:$("#textarea_1").val(),
-            characterRemark:$("#textarea_2").val(),
-            abilityRemark:$("#textarea_3").val(),
-            otherRemark:$("#textarea_4").val(),
-            compositeScore:$("#input_score").val(),
-            timeUsed:$("#timer").html().substr(3)
+            recordId: null,
+            sectionId: section_id,
+            sId: stu_id,
+            sName: $("#interviewee").text(),
+            looksRemark: $("#textarea_1").val(),
+            characterRemark: $("#textarea_2").val(),
+            abilityRemark: $("#textarea_3").val(),
+            otherRemark: $("#textarea_4").val(),
+            compositeScore: parseInt($("#input_score").val()),
+            timeUsed: $("#timer").html().substr(3)
         };
 
         $("#textarea_1").val("");
@@ -229,9 +229,10 @@
 
         $.ajax({
             type: "POST",
-            url: "/section/doneInterview",
-            data: record,
+            url: "/section/"+section_id+"/doneInterview",
+            data: JSON.stringify(record),
             dataType: "json",
+            contentType:"application/json;charset=UTF-8",
             success: function(data){
                 var jsonResult = $.parseJSON(JSON.stringify(data));
                 if (jsonResult.success){

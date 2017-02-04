@@ -57,9 +57,9 @@ public class SectionController {
         return new JsonResult<>(true);
     }
 
-    @RequestMapping(value = "/doneInterview", method = RequestMethod.POST, produces = {"application/json;charset=UTF-8"})
+    @RequestMapping(value = "/{section_id}/doneInterview", method = RequestMethod.POST, produces = {"application/json;charset=UTF-8"})
     @ResponseBody
-    public JsonResult<?> doneInterview(@RequestBody Record record){
+    public JsonResult<?> doneInterview(@PathVariable int section_id,@RequestBody Record record){
         interviewService.doneInterview(record);
         return new JsonResult<>(true);
     }
