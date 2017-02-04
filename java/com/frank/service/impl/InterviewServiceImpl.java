@@ -138,6 +138,26 @@ public class InterviewServiceImpl implements InterviewService {
 
         List<Record> recordList = getSectionRecords(section_id);
 
+        Row h_row = sheet.createRow(0);
+
+        Cell cell_h0 = h_row.createCell(0);
+        Cell cell_h1 = h_row.createCell(1);
+        Cell cell_h2 = h_row.createCell(2);
+        Cell cell_h3 = h_row.createCell(3);
+        Cell cell_h4 = h_row.createCell(4);
+        Cell cell_h5 = h_row.createCell(5);
+        Cell cell_h6 = h_row.createCell(6);
+        Cell cell_h7 = h_row.createCell(7);
+
+        cell_h0.setCellValue("学号");
+        cell_h1.setCellValue("姓名");
+        cell_h2.setCellValue("相貌评语");
+        cell_h3.setCellValue("性格评语");
+        cell_h4.setCellValue("能力评语");
+        cell_h5.setCellValue("其他评语");
+        cell_h6.setCellValue("综合评分");
+        cell_h7.setCellValue("面试用时");
+
         for (int i=0;i<recordList.size();i++){
 
             Row row = sheet.createRow(i+1);
