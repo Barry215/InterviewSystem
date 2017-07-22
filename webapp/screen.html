@@ -78,7 +78,7 @@
 
                 <div class="panel-heading dh_panel_title">组织部</div>
                 <div class="panel-body dh_span">
-                    <span id="span_1" style="font-size: 18px; color: green">空 闲</span>
+                    <span id="span_1" style="font-size: 18px; color: green">加载中...</span>
                 </div>
 
                 <ul id="ul_1" class="list-group">
@@ -92,7 +92,7 @@
 
                 <div class="panel-heading dh_panel_title">权益中心</div>
                 <div class="panel-body dh_span">
-                    <span id="span_2" style="font-size: 18px; color: green">空 闲</span>
+                    <span id="span_2" style="font-size: 18px; color: green">加载中...</span>
                 </div>
 
                 <ul id="ul_2" class="list-group">
@@ -106,7 +106,7 @@
 
                 <div class="panel-heading dh_panel_title">办公室</div>
                 <div class="panel-body dh_span">
-                    <span id="span_3" style="font-size: 18px; color: green">空 闲</span>
+                    <span id="span_3" style="font-size: 18px; color: green">加载中...</span>
                 </div>
 
                 <ul id="ul_3" class="list-group">
@@ -120,7 +120,7 @@
 
                 <div class="panel-heading dh_panel_title">公关部</div>
                 <div class="panel-body dh_span">
-                    <span id="span_4" style="font-size: 18px; color: green">空 闲</span>
+                    <span id="span_4" style="font-size: 18px; color: green">加载中...</span>
                 </div>
 
                 <ul id="ul_4" class="list-group">
@@ -134,7 +134,7 @@
 
                 <div class="panel-heading dh_panel_title">宣传部</div>
                 <div class="panel-body dh_span">
-                    <span id="span_5" style="font-size: 18px; color: green">空 闲</span>
+                    <span id="span_5" style="font-size: 18px; color: green">加载中...</span>
                 </div>
 
                 <ul id="ul_5" class="list-group">
@@ -148,7 +148,7 @@
 
                 <div class="panel-heading dh_panel_title">网技部</div>
                 <div class="panel-body dh_span">
-                    <span id="span_6" style="font-size: 18px; color: green">空 闲</span>
+                    <span id="span_6" style="font-size: 18px; color: green">加载中...</span>
                 </div>
 
                 <ul id="ul_6" class="list-group">
@@ -189,32 +189,33 @@
             $("#select_2").val(1);
             $("#student_id").val("");
             $("#student_name").val("");
+
+            var student = {
+                sId: parseInt(value_s_id),
+                sName: value_s_name,
+                firstWish: queue_wish_1,
+                secondWish: queue_wish_2
+            };
+
+            $.ajax({
+                type: "POST",
+                url: "/screen/sign",
+                data: JSON.stringify(student),
+                dataType: "json",   //response的内容是json格式
+                contentType:"application/json;charset=UTF-8",  //发送的内容是json
+                success: function (data) {
+                    var jsonResult = $.parseJSON(JSON.stringify(data));
+                    if (jsonResult.success){
+                        console.log("签到成功");
+                    }else {
+                        console.log("签到失败");
+                    }
+                }
+            });
+
         }else {
             alert("请填写完整");
         }
-
-        var student = {
-            sId: parseInt(value_s_id),
-            sName: value_s_name,
-            firstWish: queue_wish_1,
-            secondWish: queue_wish_2
-        };
-
-        $.ajax({
-            type: "POST",
-            url: "/screen/sign",
-            data: JSON.stringify(student),
-            dataType: "json",   //response的内容是json格式
-            contentType:"application/json;charset=UTF-8",  //发送的内容是json
-            success: function (data) {
-                var jsonResult = $.parseJSON(JSON.stringify(data));
-                if (jsonResult.success){
-                    console.log("签到成功");
-                }else {
-                    console.log("签到失败");
-                }
-            }
-        });
     });
 
     //置顶
